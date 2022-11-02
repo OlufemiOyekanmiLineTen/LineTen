@@ -67,19 +67,19 @@ stages:
             demands: DeploymentAgent
         steps:
         - checkout: self
-        - task: gitversion/setup@0
-          enabled: true
-          displayName: Install GitVersion
-          inputs:
-            versionSpec: '5.6.3'
-        - task: gitversion/execute@0
-          enabled: true
-          displayName: 'Establish Version'
-          inputs:
-            versionSpec: '5.6.3'
-            useConfigFile: true
-            configFilePath: "${{ parameters.SolutionFileDirectory }}/GitVersion.yml"
-            targetPath: '${{ parameters.SolutionFileDirectory }}'
+        # - task: gitversion/setup@0
+        #   enabled: true
+        #   displayName: Install GitVersion
+        #   inputs:
+        #     versionSpec: '5.6.3'
+        # - task: gitversion/execute@0
+        #   enabled: true
+        #   displayName: 'Establish Version'
+        #   inputs:
+        #     versionSpec: '5.6.3'
+        #     useConfigFile: true
+        #     configFilePath: "${{ parameters.SolutionFileDirectory }}/GitVersion.yml"
+        #     targetPath: '${{ parameters.SolutionFileDirectory }}'
         - task: UseDotNet@2
           displayName: get .net core sdk
           inputs:
