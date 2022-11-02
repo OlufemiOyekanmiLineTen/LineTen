@@ -6,11 +6,11 @@ trigger:
     include:
       - LineTen/*
 
-resources:
-  repositories:
-    - repository: pipeline-templates
-      type: git
-      name: pipeline-templates
+# resources:
+#   repositories:
+#     - repository: pipeline-templates
+#       type: git
+#       name: pipeline-templates
 
 variables:
   - name: DockerFileDirectory
