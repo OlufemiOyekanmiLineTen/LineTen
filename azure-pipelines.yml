@@ -57,8 +57,6 @@ parameters:
     - name: HelmVersion
       default: 3.3.0
       type: string
-    - name: AppName
-      type: string
     - name: DockerFileDirectory
       type: string
     - name: DockerArgs
