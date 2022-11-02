@@ -51,7 +51,7 @@ parameters:
     - name: UnitTestThreshold
       default: 80
       type: string
-     - name: AcrConnection
+    - name: AcrConnection
       default: globalthomasacrweu
       type: string
     - name: HelmVersion
