@@ -28,6 +28,30 @@ variables:
   - name: ApplicationProjectFile
     value: src/LineTen.Api.csproj
 
+parameters:
+    - name: DotNetCoreSdkVersion
+      default: 3.1.404
+      type: string
+    - name: AppName
+      type: string
+    - name: SolutionFileDirectory
+      type: string
+    - name: SolutionFile
+      type: string
+    - name: ApplicationDirectory
+      type: string
+    - name: ApplicationProjectFile
+      type: string
+    - name: BuildArgs
+      default: ''
+      type: string
+    - name: UnitTestArgs
+      default: ''
+      type: string
+    - name: UnitTestThreshold
+      default: 80
+      type: string
+
 
 stages:
   - stage: build
