@@ -1,0 +1,61 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - LineTen/*
+
+resources:
+  repositories:
+    - repository: pipeline-templates
+      type: git
+      name: pipeline-templates
+
+variables:
+  - name: DockerFileDirectory
+    value: $(Build.Repository.LocalPath)/$(Build.Repository.Name)/LineTen
+  - name: vmImage
+    value: ubuntu-latest
+  - name: AppName
+    value: LineTen-weatherforecast
+  - name: SolutionFileDirectory
+    value: $(Build.Repository.LocalPath)/$(Build.Repository.Name)
+  - name: SolutionFile
+    value: LineTen.sln
+  - name: ApplicationDirectory
+    value: $(Build.Repository.LocalPath)/$(Build.Repository.Name)/LineTen
+  - name: ApplicationProjectFile
+    value: src/LineTen.Api.csproj
+
+
+stages:
+  - stage: build
+    displayName: build/pullrequests
+    jobs:
+      - job: build
+        timeoutInMinutes: 90
+        pool:
+          vmImage: $(VmImage)
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            demands: PRAgent
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            demands: DeploymentAgent
+        steps:
+          - template: dotnet-build.yaml
+            parameters:
+              AppName: $(AppName)
+              SolutionFileDirectory: $(SolutionFileDirectory)
+              SolutionFile: $(SolutionFile)
+              ApplicationDirectory: $(ApplicationDirectory)
+              ApplicationProjectFile: $(ApplicationProjectFile)
+              DotNetCoreSdkVersion: 6.0.x
+          - template: helm-build-chart.yml
+            parameters:
+              AppName: $(AppName)
+              DockerFileDirectory: $(DockerFileDirectory)
+              DockerArgs: --build-arg PAT=$(System.AccessToken) --build-arg Configuration=$(Configuration)
+              ScanDockerImage: false
+              DockerBuildContext: $(SolutionFileDirectory)
+              SdkBaseImage: 6.0-alpine
+              AspNetBaseImage: 6.0-alpine
