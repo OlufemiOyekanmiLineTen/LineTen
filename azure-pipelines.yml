@@ -42,7 +42,7 @@ stages:
           ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
             demands: DeploymentAgent
         steps:
-          - template: dotnet-build.yaml
+          - template: /dotnet-build.yaml
             parameters:
               AppName: $(AppName)
               SolutionFileDirectory: $(SolutionFileDirectory)
