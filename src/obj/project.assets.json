@@ -317,11 +317,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Olufemi\\source\\repos2\\LineTen\\LineTen\\LineTen.csproj",
+      "projectUniqueName": "C:\\Users\\Olufemi\\source\\repos\\LineTen\\src\\LineTen.csproj",
       "projectName": "LineTen",
-      "projectPath": "C:\\Users\\Olufemi\\source\\repos2\\LineTen\\LineTen\\LineTen.csproj",
+      "projectPath": "C:\\Users\\Olufemi\\source\\repos\\LineTen\\src\\LineTen.csproj",
       "packagesPath": "C:\\Users\\Olufemi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Olufemi\\source\\repos2\\LineTen\\LineTen\\obj\\",
+      "outputPath": "C:\\Users\\Olufemi\\source\\repos\\LineTen\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Olufemi\\AppData\\Roaming\\NuGet\\NuGet.Config",
