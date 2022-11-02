@@ -1,2 +1,0 @@
-# LineTen
-LineTen Deployment Project

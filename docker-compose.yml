@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  olufemi-lineten:
-    image: ${DOCKER_REGISTRY-}olufemilineten
+  lineten:
+    image: ${DOCKER_REGISTRY-}lineten
     build:
       context: .
-      dockerfile: Olufemi-LineTen/Dockerfile
+      dockerfile: LineTen/Dockerfile

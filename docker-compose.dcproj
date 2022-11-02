@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>43838a69-3b20-4765-a9ce-b02e4b2fd824</ProjectGuid>
+    <ProjectGuid>ebf611df-55a6-429c-8e91-0c5459e5d8f5</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>olufemi-lineten</DockerServiceName>
+    <DockerServiceName>lineten</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
