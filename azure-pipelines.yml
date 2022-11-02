@@ -51,6 +51,51 @@ parameters:
     - name: UnitTestThreshold
       default: 80
       type: string
+     - name: AcrConnection
+      default: globalthomasacrweu
+      type: string
+    - name: HelmVersion
+      default: 3.3.0
+      type: string
+    - name: AppName
+      type: string
+    - name: DockerFileDirectory
+      type: string
+    - name: DockerArgs
+      default: ''
+      type: string
+    - name: DockerBuildContext
+      default: .
+      type: string
+    - name: ScanDockerImage
+      default: true
+      type: boolean
+    - name: TrivyVersion
+      default: 0.25.0
+      type: string
+    - name: HelmArgs
+      default: ''
+    - name: AcrPullRequestFolder
+      default: pull-request
+      type: string
+    - name: AcrManualFolder
+      default: manual
+      type: string
+    - name: AcrDefaultFolder
+      default: pre-release
+      type: string 
+    - name: NodeBaseImage
+      default: 16-alpine
+      type: string 
+    - name: NginxBaseImage
+      default: 1.21.6-alpine
+      type: string
+    - name: AspNetBaseImage
+      default: 5.0-alpine
+      type: string 
+    - name: SdkBaseImage
+      default: 5.0-alpine
+      type: string
 
 
 stages:
