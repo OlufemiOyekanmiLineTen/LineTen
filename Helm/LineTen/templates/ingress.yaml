@@ -1,0 +1,29 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "LineTen-weatherforecast.fullname" . -}}
+{{- $host := include "LineTen-weatherforecast.host" . -}}
+{{- $path := include "LineTen-weatherforecast.path" . -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "LineTen-weatherforecast.labels" . | indent 4 }}
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ $host }}
+    secretName: api-tls
+  rules:
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: {{ $path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port: 
+                  number: {{ .Values.service.port}}
+{{- end }}

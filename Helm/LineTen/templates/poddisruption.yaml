@@ -1,0 +1,10 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "LineTen-weatherforecast.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  maxUnavailable: "50%"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "LineTen-weatherforecast.name" . }}

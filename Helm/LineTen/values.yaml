@@ -1,0 +1,44 @@
+# Values for subscription-api
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+environment: null
+environmentType: null
+namespace: "LineTen"
+rootDomain: null
+loadBalancerFqdn: null
+replicaCount: null
+location: null
+repoBranch: null
+repoCommitId: null
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: Lineten-weatherforecast
+
+image:
+  tag: null
+  name: null
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+service:
+  type: ClusterIP
+  port: 80
+
+container:
+  port: 80
+
+ingress:
+  enabled: true
+
+resources: {}
+
+nodeSelector: {
+  "beta.kubernetes.io/os": "linux"
+}
+
+tolerations: []
