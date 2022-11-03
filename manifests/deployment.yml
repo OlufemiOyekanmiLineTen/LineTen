@@ -16,10 +16,4 @@ spec:
         - name: olufemioyekanmilinetenlineten 
           image: linetenacr.azurecr.io/olufemioyekanmilinetenlineten
           ports:
-          - containerPort: 6379
-          volumeMounts:
-          - mountPath: /var/lib/redis
-            name: data
-      volumes:
-        - name: data
-          emptyDir: {}
+          - containerPort: 80
