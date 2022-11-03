@@ -1,19 +1,10 @@
 version: '3'
 
 services:
-  web:
-    image: olufemi/lineten:ver1.1
-    deploy:
-      replicas: 3
-      resources:
-        limits:
-          cpus: "0.1"
-          memory: 50M
-      restart_policy:
-        condition: on-failure
+  Redis:
+    image: olufemioyekanmilineten/redis:4.0.9-3
     ports:
-      - "4000:80"
-    networks:
-      - webnet
-networks:
-  webnet:
+      - "6379:6379"
+    volumes:
+      - /srv/docker/redis:/var/lib/redis
+    restart: always
