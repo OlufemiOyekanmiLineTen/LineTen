@@ -32,7 +32,7 @@ stages:
          vmImage: $(vmImageName)
        continueOnError: false
        steps:
-        - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+        - task: TerraformInstaller@0
           displayName: Install Terraform 0.14.6
           inputs:
             terraformVersion: 0.14.6
