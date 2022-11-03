@@ -33,9 +33,9 @@ stages:
        continueOnError: false
        steps:
         - task: TerraformInstaller@0
-          displayName: Install Terraform 2.4.0
+          displayName: Install Terraform 1.1.7
           inputs:
-            terraformVersion: '2.4.0'
+            terraformVersion: '1.1.7'
         
         - task: PowerShell@2
           inputs:
