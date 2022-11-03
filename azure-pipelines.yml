@@ -11,12 +11,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '5a092e3f-d2b4-46c7-89af-5dc2d0ed44ec'
+  dockerRegistryServiceConnection: '6b30a466-e063-4187-886a-cb667c5bc9e1'
   imageRepository: 'olufemioyekanmilinetenlineten'
   containerRegistry: 'linetenacr.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'linetenacr1673d84e-auth'
+  imagePullSecret: 'linetenacr1448da69-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
