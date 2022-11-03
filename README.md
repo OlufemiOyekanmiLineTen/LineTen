@@ -11,4 +11,7 @@ The Azure Pipleine contains three stages
 
 1. The Infrastructure stage - The Infrastruture is built with terraform. It contains a series of terraform files which builds an AKS cluster, a container registry.
 2. The Build stage - In this stage, the pipeline builds the application using its Dockerfile and is deployed to ACR
-3. The Deploy to Kuberenets stage - In this stage, the image is pulled from the ACR and deployed into the Kubernetes cluster
+3. The Deploy to Kuberenets stage - In this stage, the image is pulled from the ACR and deployed into the Kubernetes cluster.
+
+
+The Service external IP is 40.114.174.15
