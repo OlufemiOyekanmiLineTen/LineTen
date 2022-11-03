@@ -39,11 +39,13 @@ stages:
       - task: TerraformTaskV3@3
         displayName: 'Terraform : Init'
         inputs:
-          backendServiceArm: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
-          backendAzureRmResourceGroupName: lineten-rg
-          backendAzureRmStorageAccountName: linetendemostorage
-          backendAzureRmContainerName: tfstate
-          backendAzureRmKey: lineten.tfstate
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'b85ebbaa-077b-4fb1-b42b-93cfc2161b17'
+          backendAzureRmResourceGroupName: 'lineten-rg'
+          backendAzureRmStorageAccountName: 'linetendemostorage'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'lineten.tfstate'
       - task: TerraformTaskV3@3
         displayName: 'Terraform : plan'
         inputs:
