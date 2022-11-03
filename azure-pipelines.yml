@@ -55,11 +55,11 @@ stages:
               export ARM_TENANT_ID="$(AZ_TENANT_ID)"
               export ARM_CLIENT_ID="$(AZ_CLIENT_ID)"
               export ARM_CLIENT_SECRET="$(AZ_CLIENT_SECRET)"
-        - task: TerraformCLI@0
-          inputs:
-            command: 'import'
-            secureVarsFile: 'ARM_TENANT_ID: ${{ secrets.AZ_TENANT_ID }}  ARM_SUBSCRIPTION_ID: ${{ secrets.AZ_SUBSCRIPTION_ID }}     ARM_CLIENT_ID: ${{ secrets.AZ_CLIENT_ID }}     ARM_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}'
-            allowTelemetryCollection: true
+        # - task: TerraformCLI@0
+        #   inputs:
+        #     command: 'import'
+        #     secureVarsFile: 'ARM_TENANT_ID: ${{ secrets.AZ_TENANT_ID }}  ARM_SUBSCRIPTION_ID: ${{ secrets.AZ_SUBSCRIPTION_ID }}     ARM_CLIENT_ID: ${{ secrets.AZ_CLIENT_ID }}     ARM_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}'
+        #     allowTelemetryCollection: true
 
         - task: TerraformCLI@0
           inputs:
