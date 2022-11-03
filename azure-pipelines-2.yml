@@ -19,7 +19,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmvmImage)
+      vmImage: $(vmImage)
     steps:
     - task: Docker@2
       displayName: Build an image
