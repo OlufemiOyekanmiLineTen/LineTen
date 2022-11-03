@@ -30,28 +30,36 @@ stages:
     displayName: Install Terraform 0.14.6
     inputs:
       terraformVersion: 0.14.6
-  - task: CmdLine@2
-    displayName: Terraform Init
+
+  - task: TerraformCLI@0
     inputs:
-      script: terraform init -backend-config="access_key=$(jtmsneusacesterraform001-key1)"
-      workingDirectory: terraform
-  - task: CmdLine@2
-    displayName: Terraform Import
-    inputs:
-      script: |
-        terraform import -input=false -var="spn-client-id=$(nstar-tenant-tf-spn-client-id)" -var="spn-client-secret=$(nstar-tenant-tf-spn-secret)" -var="spn-tenant-id=$(nstar-tenant-tf-spn-tenant-id)" azurerm_role_definition.network-readers-vwan-routes "/providers/Microsoft.Authorization/roleDefinitions/e661db04-4e55-3142-89f4-d3e273090ca2|/providers/Microsoft.Management/managementGroups/JT"
-      workingDirectory: terraform
+      command: 'import'
+      environmentServiceName: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
+      providerAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
+      allowTelemetryCollection: true
   - task: CmdLine@2
     displayName: Terraform Validate
     inputs:
       script: terraform validate
-      workingDirectory: terraform
-  - task: CmdLine@2
-    displayName: Terraform Plan
-    inputs:
-      script: terraform plan -input=false -out=tfplan -var="spn-client-id=$(nstar-tenant-tf-spn-client-id)" -var="spn-client-secret=$(nstar-tenant-tf-spn-secret)" -var="spn-tenant-id=$(nstar-tenant-tf-spn-tenant-id)"
-      workingDirectory: terraform
 
+  - task: TerraformCLI@0
+    inputs:
+      command: 'init'
+      commandOptions: 'terraform init'
+      backendType: 'azurerm'
+      backendServiceArm: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
+      backendAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
+      backendAzureRmResourceGroupName: 'lineten-rg'
+      backendAzureRmStorageAccountName: 'linetendemostorage'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'lineten.tfstate'
+      allowTelemetryCollection: true
+  
+  - task: TerraformCLI@0
+    inputs:
+      command: 'plan'
+      providerAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
+      allowTelemetryCollection: true
   - task: AzurePowerShell@4
     displayName: terraform plan
     inputs:
@@ -60,12 +68,10 @@ stages:
       ScriptArguments: -platform dev -location westeurope -primaryLocation westeurope -secondaryLocations @("northeurope") -planId $(Build.BuildId)
       azurePowerShellVersion: LatestVersion
       FailOnStandardError: true
-
-  - task: CmdLine@2
-    displayName: Terraform Apply
+  - task: TerraformCLI@0
     inputs:
-      script: terraform apply
-      workingDirectory: terraform
+      command: 'apply'
+      allowTelemetryCollection: true
 
 - stage: Build
   displayName: Build stage
