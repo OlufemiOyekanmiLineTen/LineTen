@@ -74,10 +74,6 @@ stages:
             ScriptArguments: -platform dev -location westeurope -primaryLocation westeurope -secondaryLocations @("northeurope") -planId $(Build.BuildId)
             azurePowerShellVersion: LatestVersion
             FailOnStandardError: true
-        - task: TerraformCLI@0
-          inputs:
-          command: 'apply'
-          allowTelemetryCollection: true
 
   - stage: Build
     displayName: Build stage
