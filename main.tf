@@ -38,9 +38,9 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     name       = "agentpool"
     node_count = var.agent_count
     vm_size    = "Standard_D2_v2"
-    enable_auto_scaling  = true
-    max_count            = 3
-    min_count            = 1
+    enable_auto_scaling  = false
+    max_count            = null
+    min_count            = null
     os_disk_size_gb      = 30
     type                 = "VirtualMachineScaleSets"
 
@@ -52,10 +52,15 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     } 
   }
 
-  
-  service_principal {
-    client_id     = var.client_id
-    client_secret = var.client_secret
+  role_based_access_control {
+    enabled = true
+  }
+
+
+
+  # azure will assign the id automatically
+  identity {
+    type = "SystemAssigned"
   }
 
 
@@ -71,9 +76,18 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
  
 }
 
-# resource "azurerm_role_assignment" "aks_cluster_role" {
-#   principal_id                     = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[0].object_id
-#   role_definition_name             = "AcrPull"
-#   scope                            = azurerm_container_registry.lineten_acr.id
-#   skip_service_principal_aad_check = true
-# }
+resource "azurerm_container_registry" "acr" {
+  name                = "linetenacr"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  sku                 = "Standard"
+  admin_enabled       = true
+
+}
+
+# add the role to the identity the kubernetes cluster was assigned
+resource "azurerm_role_assignment" "kubweb_to_acr" {
+  scope                = azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[0].object_id
+}
