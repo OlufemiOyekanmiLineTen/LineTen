@@ -25,6 +25,41 @@ variables:
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
 stages:
+- stage: Create_infrastructure
+  displayName: Create the Infrastructure
+  jobs:
+  - job: Job_1
+    displayName: Agent job 1
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - checkout: self
+      clean: true
+      fetchTags: false
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: Use Terraform latest
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform : Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'b85ebbaa-077b-4fb1-b42b-93cfc2161b17'
+        backendAzureRmResourceGroupName: 'lineten-rg'
+        backendAzureRmStorageAccountName: 'linetendemostorage'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'lineten.tfstate'
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform : plan'
+      inputs:
+        command: plan
+        environmentServiceNameAzureRM: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform : apply'
+      inputs:
+        command: apply
+        environmentServiceNameAzureRM: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
+
+
 - stage: Build
   displayName: Build stage
   jobs:
