@@ -23,6 +23,50 @@ variables:
 
 
 stages:
+- stage: Create infrastructure
+  displayName: Create the Infrastructure
+  steps:
+  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+    displayName: Install Terraform 0.14.6
+    inputs:
+      terraformVersion: 0.14.6
+  - task: CmdLine@2
+    displayName: Terraform Init
+    inputs:
+      script: terraform init -backend-config="access_key=$(jtmsneusacesterraform001-key1)"
+      workingDirectory: terraform
+  - task: CmdLine@2
+    displayName: Terraform Import
+    inputs:
+      script: |
+        terraform import -input=false -var="spn-client-id=$(nstar-tenant-tf-spn-client-id)" -var="spn-client-secret=$(nstar-tenant-tf-spn-secret)" -var="spn-tenant-id=$(nstar-tenant-tf-spn-tenant-id)" azurerm_role_definition.network-readers-vwan-routes "/providers/Microsoft.Authorization/roleDefinitions/e661db04-4e55-3142-89f4-d3e273090ca2|/providers/Microsoft.Management/managementGroups/JT"
+      workingDirectory: terraform
+  - task: CmdLine@2
+    displayName: Terraform Validate
+    inputs:
+      script: terraform validate
+      workingDirectory: terraform
+  - task: CmdLine@2
+    displayName: Terraform Plan
+    inputs:
+      script: terraform plan -input=false -out=tfplan -var="spn-client-id=$(nstar-tenant-tf-spn-client-id)" -var="spn-client-secret=$(nstar-tenant-tf-spn-secret)" -var="spn-tenant-id=$(nstar-tenant-tf-spn-tenant-id)"
+      workingDirectory: terraform
+
+  - task: AzurePowerShell@4
+    displayName: terraform plan
+    inputs:
+      azureSubscription: dev
+      ScriptPath: $(System.DefaultWorkingDirectory)/plan.ps1
+      ScriptArguments: -platform dev -location westeurope -primaryLocation westeurope -secondaryLocations @("northeurope") -planId $(Build.BuildId)
+      azurePowerShellVersion: LatestVersion
+      FailOnStandardError: true
+
+  - task: CmdLine@2
+    displayName: Terraform Apply
+    inputs:
+      script: terraform apply
+      workingDirectory: terraform
+
 - stage: Build
   displayName: Build stage
   jobs:
