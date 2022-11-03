@@ -36,6 +36,30 @@ stages:
           displayName: Install Terraform 0.14.6
           inputs:
             terraformVersion: 0.14.6
+        
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
+            scriptType: 'ps'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              az login --service-principal \
+                --username "63ad965f-fb30-42fc-b16f-d5181257c0da" \
+                --password "tYb8Q~yvIg40pZPdEW8Gf52cFrJ26r4d5KPcfcO2" \
+                --tenant "ea7159a9-ebae-4765-9f8b-34922c51aa36"
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              export ARM_SUBSCRIPTION_ID="$(AZ_SUBSCRIPTION_ID)"
+              export ARM_TENANT_ID="$(AZ_TENANT_ID)"
+              export ARM_CLIENT_ID="$(AZ_CLIENT_ID)"
+              export ARM_CLIENT_SECRET="$(AZ_CLIENT_SECRET)"
+        - task: TerraformCLI@0
+          inputs:
+            command: 'import'
+            secureVarsFile: 'ARM_TENANT_ID: ${{ secrets.AZ_TENANT_ID }}  ARM_SUBSCRIPTION_ID: ${{ secrets.AZ_SUBSCRIPTION_ID }}     ARM_CLIENT_ID: ${{ secrets.AZ_CLIENT_ID }}     ARM_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}'
+            allowTelemetryCollection: true
 
         - task: TerraformCLI@0
           inputs:
