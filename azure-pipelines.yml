@@ -37,12 +37,10 @@ stages:
           inputs:
             terraformVersion: 0.14.6
         
-        - task: AzureCLI@2
+        - task: PowerShell@2
           inputs:
-            azureSubscription: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
-            scriptType: 'ps'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
+            targetType: 'inline'
+            script: |
               az login --service-principal \
                 --username "63ad965f-fb30-42fc-b16f-d5181257c0da" \
                 --password "tYb8Q~yvIg40pZPdEW8Gf52cFrJ26r4d5KPcfcO2" \
