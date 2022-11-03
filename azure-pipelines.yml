@@ -56,16 +56,14 @@ stages:
         #     secureVarsFile: 'ARM_TENANT_ID: ${{ secrets.AZ_TENANT_ID }}  ARM_SUBSCRIPTION_ID: ${{ secrets.AZ_SUBSCRIPTION_ID }}     ARM_CLIENT_ID: ${{ secrets.AZ_CLIENT_ID }}     ARM_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}'
         #     allowTelemetryCollection: true
 
-        # - task: TerraformCLI@0
-        #   inputs:
-        #     command: 'import'
-        #     environmentServiceName: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
-        #     providerAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
-        #     allowTelemetryCollection: true
-        - task: CmdLine@2
-          displayName: Terraform init
+        - task: AzurePowerShell@5
           inputs:
-            script: terraform init
+            azureSubscription: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
+            ScriptType: 'InlineScript'
+            Inline: |
+              az login --service-principal --username "63ad965f-fb30-42fc-b16f-d5181257c0da" --password "tYb8Q~yvIg40pZPdEW8Gf52cFrJ26r4d5KPcfcO2" --tenant "ea7159a9-ebae-4765-9f8b-34922c51aa36"
+                          terraform init
+            azurePowerShellVersion: 'LatestVersion'
 
         - task: TerraformCLI@0
           inputs:
