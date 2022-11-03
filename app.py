@@ -1,27 +1,9 @@
-from flask import flask
-from redis import Redis, RedisError
-import os
-import socket
-
-redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2 )
-
+from flask import Flask
 app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    try:
-        visits = redis.incr("counter")
-    except RedisError:
-        visits = "<i> Cannot connect to Redus, counter now disabled<i>"
+    return "Hello Linetem! It's Olufemi !"
 
-    html = "<h3>Hello {name}! <h3>" \
-            "<b>Hostname:</b> {hostname} with {visits} visits"
-    
-    return html.format{
-        name=os.getenv("NAME", "world"),
-        hostname = socket.gethostname(),
-        visits=visits
-    }
-
-if __name__ == "__main__"
-    app.run(host="0.0.0.0", port=80)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
