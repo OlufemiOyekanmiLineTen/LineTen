@@ -23,7 +23,7 @@ variables:
 
 
 stages:
-  - stage: Create infrastructure
+  - stage: Create-infrastructure
     displayName: Create the Infrastructure
     jobs:
      - job: terraform_plan
