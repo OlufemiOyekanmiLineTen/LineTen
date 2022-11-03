@@ -26,49 +26,34 @@ stages:
   - stage: Create_infrastructure
     displayName: Create the Infrastructure
     jobs:
-     - job: terraform_plan
-       displayName: plan
-       pool:
-         vmImage: $(vmImageName)
-       continueOnError: false
-       steps:
-        - task: TerraformInstaller@0
-          displayName: Install Terraform 1.1.7
-          inputs:
-            terraformVersion: '1.1.7'
-        
-        - task: PowerShell@2
-          inputs:
-            targetType: 'inline'
-            script: |
-              az login --service-principal --username "63ad965f-fb30-42fc-b16f-d5181257c0da" --password "tYb8Q~yvIg40pZPdEW8Gf52cFrJ26r4d5KPcfcO2" --tenant "ea7159a9-ebae-4765-9f8b-34922c51aa36"
-        - task: Bash@3
-          inputs:
-            targetType: 'inline'
-            script: |
-              export ARM_SUBSCRIPTION_ID="$(AZ_SUBSCRIPTION_ID)"
-              export ARM_TENANT_ID="$(AZ_TENANT_ID)"
-              export ARM_CLIENT_ID="$(AZ_CLIENT_ID)"
-              export ARM_CLIENT_SECRET="$(AZ_CLIENT_SECRET)"
-
-        - task: TerraformCLI@0
-          inputs:
-            command: 'init'
-            commandOptions: 'terraform init'
-            backendType: 'azurerm'
-            backendServiceArm: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
-            backendAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
-            backendAzureRmResourceGroupName: 'lineten-rg'
-            backendAzureRmStorageAccountName: 'linetendemostorage'
-            backendAzureRmContainerName: 'tfstate'
-            backendAzureRmKey: 'lineten.tfstate'
-            allowTelemetryCollection: true
-        
-        - task: TerraformCLI@0
-          inputs:
-            command: 'plan'
-            providerAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
-            allowTelemetryCollection: true
+    - job: Job_1
+      displayName: Agent job 1
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - checkout: self
+        clean: true
+        fetchTags: false
+      - task: TerraformInstaller@0
+        displayName: Use Terraform latest
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform : Init'
+        inputs:
+          backendServiceArm: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
+          backendAzureRmResourceGroupName: lineten-rg
+          backendAzureRmStorageAccountName: linetendemostorage
+          backendAzureRmContainerName: tfstate
+          backendAzureRmKey: lineten.tfstate
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform : plan'
+        inputs:
+          command: plan
+          environmentServiceNameAzureRM: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform : apply'
+        inputs:
+          command: apply
+          environmentServiceNameAzureRM: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
 
   - stage: Build
     displayName: Build stage
