@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: olufemioyekanmilinetenlineten 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: olufemioyekanmilinetenlineten
+  template:
+    metadata:
+      labels:
+        app: olufemioyekanmilinetenlineten 
+    spec:
+      containers:
+        - name: olufemioyekanmilinetenlineten 
+          image: linetenacr.azurecr.io/olufemioyekanmilinetenlineten
+          ports:
+          - containerPort: 80
