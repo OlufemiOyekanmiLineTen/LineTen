@@ -66,14 +66,6 @@ stages:
             command: 'plan'
             providerAzureRmSubscriptionId: 'c5808d2a-9117-446f-bcb7-3d65993bbef2'
             allowTelemetryCollection: true
-        - task: AzurePowerShell@4
-          displayName: terraform plan
-          inputs:
-            azureSubscription: dev
-            ScriptPath: $(System.DefaultWorkingDirectory)/plan.ps1
-            ScriptArguments: -platform dev -location westeurope -primaryLocation westeurope -secondaryLocations @("northeurope") -planId $(Build.BuildId)
-            azurePowerShellVersion: LatestVersion
-            FailOnStandardError: true
 
   - stage: Build
     displayName: Build stage
