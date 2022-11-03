@@ -1,9 +1,9 @@
-name: dockercompose4081935137858467498
+name: dockercompose7077572015510445058
 services:
   lineten:
     build:
-      context: C:\Users\Olufemi\source\repos2\LineTen
-      dockerfile: LineTen/Dockerfile
+      context: C:\Users\Olufemi\source\repos\lineten
+      dockerfile: lineten/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: https://+:443;http://+:80
@@ -32,4 +32,4 @@ services:
         create_host_path: true
 networks:
   default:
-    name: dockercompose4081935137858467498_default
+    name: dockercompose7077572015510445058_default

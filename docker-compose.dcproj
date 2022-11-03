@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>ebf611df-55a6-429c-8e91-0c5459e5d8f5</ProjectGuid>
+    <ProjectGuid>6029922d-c0cc-4dda-bc8f-d5c289b48f41</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>lineten</DockerServiceName>
