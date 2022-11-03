@@ -58,12 +58,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     client_secret = var.client_secret
   }
 
-  addon_profile {
-    oms_agent {
-      enabled                    = true
-      log_analytics_workspace_id = azurerm_log_analytics_workspace.linetenlogs.id
-    }
-  }
 
   network_profile {
     load_balancer_sku = "Standard"
