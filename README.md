@@ -1,3 +1,5 @@
+<b>The Hello LineTen App </b>
+
 This project contains a simple Hello World application built with Python.
 
 The application is synced with Azure Devops in which a build is triggered when there's an update to the main branch.
