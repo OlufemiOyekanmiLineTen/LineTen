@@ -1,13 +1,8 @@
-FROM python:2.7-slim
-
-WORKDIR /app
+FROM python:3.8
 
 COPY . /app
+WORKDIR /app
+RUN pip install -r dependency_software.txt
 
-RUN pip install --trusted-host pypl.python.org -r requirements.txt
-
-EXPOSE 80
-
-ENV NAME World
-
-CMD ["python", "app.py"]
+# command to run on container start
+CMD [ "python", "my_app.py" ]
