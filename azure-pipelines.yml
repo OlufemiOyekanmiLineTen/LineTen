@@ -60,9 +60,7 @@ stages:
           inputs:
             azureSubscription: 'Azure subscription 1 (c5808d2a-9117-446f-bcb7-3d65993bbef2)'
             ScriptType: 'InlineScript'
-            Inline: |
-              az login --service-principal --username "63ad965f-fb30-42fc-b16f-d5181257c0da" --password "tYb8Q~yvIg40pZPdEW8Gf52cFrJ26r4d5KPcfcO2" --tenant "ea7159a9-ebae-4765-9f8b-34922c51aa36"
-                          terraform init
+            Inline: 'az login --service-principal --username "63ad965f-fb30-42fc-b16f-d5181257c0da" --password "tYb8Q~yvIg40pZPdEW8Gf52cFrJ26r4d5KPcfcO2" --tenant "ea7159a9-ebae-4765-9f8b-34922c51aa36"'
             azurePowerShellVersion: 'LatestVersion'
 
         - task: TerraformCLI@0
