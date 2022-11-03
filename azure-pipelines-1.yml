@@ -1,0 +1,113 @@
+# Deploy to Azure Kubernetes Service
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '6b30a466-e063-4187-886a-cb667c5bc9e1'
+  imageRepository: 'olufemioyekanmilinetenlineten'
+  containerRegistry: 'linetenacr.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'linetenacr1448da69-auth'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+
+stages:
+  - stage: Create_infrastructure
+    displayName: Create the Infrastructure
+    jobs:
+    - job: Job_1
+      displayName: Agent job 1
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - checkout: self
+        clean: true
+        fetchTags: false
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+        displayName: Use Terraform latest
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform : Init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'b85ebbaa-077b-4fb1-b42b-93cfc2161b17'
+          backendAzureRmResourceGroupName: 'lineten-rg'
+          backendAzureRmStorageAccountName: 'linetendemostorage'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'lineten.tfstate'
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform : plan'
+        inputs:
+          command: plan
+          environmentServiceNameAzureRM: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform : apply'
+        inputs:
+          command: apply
+          environmentServiceNameAzureRM: b85ebbaa-077b-4fb1-b42b-93cfc2161b17
+
+  - stage: Build
+    displayName: Build stage
+    jobs:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - task: Docker@2
+        displayName: Build and push an image to container registry
+        inputs:
+          command: buildAndPush
+          repository: $(imageRepository)
+          dockerfile: $(dockerfilePath)
+          containerRegistry: $(dockerRegistryServiceConnection)
+          tags: |
+            $(tag)
+
+      - upload: manifests
+        artifact: manifests
+
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+
+    jobs:
+    - deployment: Deploy
+      displayName: Deploy
+      pool:
+        vmImage: $(vmImageName)
+      environment: 'OlufemiOyekanmiLineTenLineTen-1714.default'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: KubernetesManifest@0
+              displayName: Create imagePullSecret
+              inputs:
+                action: createSecret
+                secretName: $(imagePullSecret)
+                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+            - task: KubernetesManifest@0
+              displayName: Deploy to Kubernetes cluster
+              inputs:
+                action: deploy
+                manifests: |
+                  $(Pipeline.Workspace)/manifests/deployment.yml
+                  $(Pipeline.Workspace)/manifests/service.yml
+                imagePullSecrets: |
+                  $(imagePullSecret)
+                containers: |
+                  $(containerRegistry)/$(imageRepository):$(tag)
+
