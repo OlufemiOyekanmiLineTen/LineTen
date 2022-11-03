@@ -1,10 +1,16 @@
 version: '3'
-
 services:
-  Redis:
-    image: olufemioyekanmilineten/redis:4.0.9-3
+  web:
+    # replace username/repo:tag with your name and image details
+    image: linetenacr.azurecr.io/olufemioyekanmilinetenlineten
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
     ports:
-      - "6379:6379"
-    volumes:
-      - /srv/docker/redis:/var/lib/redis
-    restart: always
+      - "80:80"
+networks:
