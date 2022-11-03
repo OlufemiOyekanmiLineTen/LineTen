@@ -1,8 +1,19 @@
-version: '3.4'
+version: '3'
 
 services:
-  lineten:
-    image: ${DOCKER_REGISTRY-}lineten
-    build:
-      context: .
-      dockerfile: lineten/Dockerfile
+  web:
+    image: olufemi/lineten:ver1.1
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "4000:80"
+    networks:
+      - webnet
+networks:
+  webnet:

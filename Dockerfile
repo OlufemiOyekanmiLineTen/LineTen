@@ -1,22 +1,13 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM python:2.7-slim
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+
+COPY . /app
+
+RUN pip install --trusted-host pypl.python.org -r requirements.txt
+
 EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["lineten/lineten.csproj", "."]
-RUN dotnet restore "./lineten.csproj"
-COPY . .
-WORKDIR "/src/src/."
-RUN dotnet build "lineten.csproj" -c Release -o /app/build
+ENV NAME World
 
-FROM build AS publish
-RUN dotnet publish "lineten.csproj" -c Release -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "lineten.dll"]
+CMD ["python", "app.py"]
